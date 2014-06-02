@@ -3,6 +3,10 @@
 $properties = array();
 
 $tmp = array(
+    'fields' => array(
+        'type' => 'textfield',
+        'value' => 'id;type;available;url;price;currencyId;category;picture;delivery;local_delivery_cost;vendor;model;description',
+    ),
     'tpl' => array(
         'type' => 'textfield',
         'value' => 'tpl.miniShop2YandexMarketCSV.item',

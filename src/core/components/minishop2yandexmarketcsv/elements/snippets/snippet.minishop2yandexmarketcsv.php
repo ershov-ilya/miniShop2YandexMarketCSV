@@ -3,6 +3,9 @@
 $miniShop2YandexMarketCSV = $modx->getService('minishop2yandexmarketcsv','miniShop2YandexMarketCSV',$modx->getOption('minishop2yandexmarketcsv_core_path',null,$modx->getOption('core_path').'components/minishop2yandexmarketcsv/').'model/minishop2yandexmarketcsv/',$scriptProperties);
 if (!($miniShop2YandexMarketCSV instanceof miniShop2YandexMarketCSV)) return '';
 
+$n=$modx->getOption('outputSeparator',$scriptProperties,"\n");
+$fields = $modx->getOption('fields',$scriptProperties,'id');
+$output = $fields.$n;
 
 print '<pre>';
 print_r($miniShop2YandexMarketCSV->getConfig());
@@ -13,7 +16,6 @@ $tpl = $modx->getOption('tpl',$scriptProperties,'Item');
 $sortBy = $modx->getOption('sortBy',$scriptProperties,'name');
 $sortDir = $modx->getOption('sortDir',$scriptProperties,'ASC');
 $limit = $modx->getOption('limit',$scriptProperties,5);
-$outputSeparator = $modx->getOption('outputSeparator',$scriptProperties,"\n");
 
 // build query
 $c = $modx->newQuery('miniShop2YandexMarketCSVItem');
