@@ -1,51 +1,29 @@
 <?php
+define('DEBUG',1);
 /* @var modX $modx */
 $Y = $modx->getService('minishop2yandexmarketcsv','miniShop2YandexMarketCSV',$modx->getOption('minishop2yandexmarketcsv_core_path',null,$modx->getOption('core_path').'components/minishop2yandexmarketcsv/').'model/minishop2yandexmarketcsv/',$scriptProperties);
 if (!($Y instanceof miniShop2YandexMarketCSV)) return '';
 
-$n=$modx->getOption('outputSeparator',$scriptProperties,"\n");
 $fields = $modx->getOption('fields',$scriptProperties,'id');
 $Y->put($fields);
 
 $arrFields=explode(';', $fields);
 $countFields=count($arrFields);
 
-$Y->put("\nfields count:$countFields");
+$parents = $modx->getOption('parents',$scriptProperties,'0');
+
+
+
 /*
 print '<pre>';
 print_r($miniShop2YandexMarketCSV->getConfig());
 print '</pre>';
 /**/
 
-/*
-$tpl = $modx->getOption('tpl',$scriptProperties,'Item');
-$sortBy = $modx->getOption('sortBy',$scriptProperties,'name');
-$sortDir = $modx->getOption('sortDir',$scriptProperties,'ASC');
-$limit = $modx->getOption('limit',$scriptProperties,5);
-
-// build query
-$c = $modx->newQuery('miniShop2YandexMarketCSVItem');
-$c->sortby($sortBy,$sortDir);
-$c->limit($limit);
-$items = $modx->getCollection('miniShop2YandexMarketCSVItem',$c);
-
-// iterate through items
-$list = array();
-/* @var miniShop2YandexMarketCSVItem $item */
-
-/*
-foreach ($items as $item) {
-	$itemArray = $item->toArray();
-	$list[] = $modx->getChunk($tpl,$itemArray);
+// Debug info
+if(DEBUG){
+    $Y->put("Debug info:");
+    $Y->put("fields count: $countFields");
+    $Y->put("parents: $parents");
 }
-
-// output
-$output = implode($outputSeparator,$list);
-$toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
-if (!empty($toPlaceholder)) {
-	// if using a placeholder, output nothing and set output to specified placeholder
-	$modx->setPlaceholder($toPlaceholder,$output);
-	return '';
-}
-/* by default just return output */
 return $Y->getOutput();
