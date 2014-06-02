@@ -6,6 +6,7 @@
 class miniShop2YandexMarketCSV {
 	/* @var modX $modx */
 	public $modx;
+    private $output;
 
 
 	/**
@@ -14,6 +15,7 @@ class miniShop2YandexMarketCSV {
 	 */
 	function __construct(modX &$modx, array $config = array()) {
 		$this->modx =& $modx;
+        $this->output='';
 
 		$corePath = $this->modx->getOption('minishop2yandexmarketcsv_core_path', $config, $this->modx->getOption('core_path') . 'components/minishop2yandexmarketcsv/');
 		$assetsUrl = $this->modx->getOption('minishop2yandexmarketcsv_assets_url', $config, $this->modx->getOption('assets_url') . 'components/minishop2yandexmarketcsv/');
@@ -41,6 +43,15 @@ class miniShop2YandexMarketCSV {
 
     function getConfig(){
         return $this->config;
+    }
+
+    function put($str, $br=true){
+        $this->output.=$str;
+        if($br) $this->output.= $this->config['outputSeparator'];
+    }
+
+    function getOutput(){
+        return $this->output;
     }
 
 }

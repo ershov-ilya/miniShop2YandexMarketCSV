@@ -1,15 +1,21 @@
 <?php
 /* @var modX $modx */
-$miniShop2YandexMarketCSV = $modx->getService('minishop2yandexmarketcsv','miniShop2YandexMarketCSV',$modx->getOption('minishop2yandexmarketcsv_core_path',null,$modx->getOption('core_path').'components/minishop2yandexmarketcsv/').'model/minishop2yandexmarketcsv/',$scriptProperties);
-if (!($miniShop2YandexMarketCSV instanceof miniShop2YandexMarketCSV)) return '';
+$Y = $modx->getService('minishop2yandexmarketcsv','miniShop2YandexMarketCSV',$modx->getOption('minishop2yandexmarketcsv_core_path',null,$modx->getOption('core_path').'components/minishop2yandexmarketcsv/').'model/minishop2yandexmarketcsv/',$scriptProperties);
+if (!($Y instanceof miniShop2YandexMarketCSV)) return '';
 
 $n=$modx->getOption('outputSeparator',$scriptProperties,"\n");
 $fields = $modx->getOption('fields',$scriptProperties,'id');
-$output = $fields.$n;
+$Y->put($fields);
 
+$arrFields=explode(';', $fields);
+$countFields=count($arrFields);
+
+$Y->put("\nfields count:$countFields");
+/*
 print '<pre>';
 print_r($miniShop2YandexMarketCSV->getConfig());
 print '</pre>';
+/**/
 
 /*
 $tpl = $modx->getOption('tpl',$scriptProperties,'Item');
@@ -42,4 +48,4 @@ if (!empty($toPlaceholder)) {
 	return '';
 }
 /* by default just return output */
-return $output;
+return $Y->getOutput();
