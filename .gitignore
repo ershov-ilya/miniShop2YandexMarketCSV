@@ -1,3 +1,11 @@
+#############
+## phpStorm
+#############
+.idea/
+*.iws
+workspace.xml
+tasks.xml
+
 #################
 ## Eclipse
 #################

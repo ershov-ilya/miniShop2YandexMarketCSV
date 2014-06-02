@@ -1,0 +1,1 @@
+<div id="minishop2yandexmarketcsv-panel-home-div"></div>
