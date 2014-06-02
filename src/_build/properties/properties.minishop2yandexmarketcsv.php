@@ -7,6 +7,22 @@ $tmp = array(
         'type' => 'textfield',
         'value' => 'tpl.miniShop2YandexMarketCSV.item',
     ),
+    'class' => array(
+        'type' => 'textfield',
+        'value' => 'msProduct',
+    ),
+    'depth' => array(
+        'type' => 'numberfield',
+        'value' => '10',
+    ),
+    'productTemplateID' => array(
+        'type' => 'numberfield',
+        'value' => '1',
+    ),
+    'categoryTemplateID' => array(
+        'type' => 'numberfield',
+        'value' => '0',
+    ),
     'parents' => array(
         'type' => 'textfield',
         'value' => '0',
@@ -25,7 +41,7 @@ $tmp = array(
 	),
 	'limit' => array(
 		'type' => 'numberfield',
-		'value' => 5,
+		'value' => 1000,
 	),
 	'outputSeparator' => array(
 		'type' => 'textfield',
