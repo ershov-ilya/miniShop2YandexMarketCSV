@@ -1,10 +1,7 @@
 --------------------
 miniShop2YandexMarketCSV
 --------------------
-Author: John Doe <john@doe.com>
+Author: Ilya Ershov, skype: ershov.ilya
 --------------------
 
-A basic Extra for MODx Revolution.
-
-Feel free to suggest ideas/improvements/bugs on GitHub:
-http://github.com/username/miniShop2YandexMarketCSV/issues
+http://github.com/ershov-ilya/miniShop2YandexMarketCSV/issues

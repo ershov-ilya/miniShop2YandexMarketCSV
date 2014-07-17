@@ -11,6 +11,10 @@ $tmp = array(
         'type' => 'textfield',
         'value' => 'tpl.miniShop2YandexMarketCSV.item',
     ),
+    'context' => array(
+        'type' => 'textfield',
+        'value' => 'web',
+    ),
     'class' => array(
         'type' => 'textfield',
         'value' => 'msProduct',
