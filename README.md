@@ -1,4 +1,6 @@
-miniShop2YandexMarketCSV: MODX Revo, miniShop2
+miniShop2YandexMarketCSV
+==
+MODX Revo, miniShop2
 ==
 
 usage in Resource body (content type "text") call the snippet
