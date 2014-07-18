@@ -177,7 +177,7 @@ class miniShop2YandexMarketCSV {
 
     function sanitize($str){
         $res=preg_replace('/;/',',',$str);
-        $res=preg_replace('/[\r\n]/','',$res);
+        $res=preg_replace('/[\r\n]+/','. ',$res);
         return $res;
     }
 
