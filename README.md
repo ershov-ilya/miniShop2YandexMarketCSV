@@ -7,8 +7,11 @@ usage in Resource body (content type "text") call the snippet
 
 `
 [[!miniShop2YandexMarketCSV?
-&parents=`58`
-&productTemplateID=`7`
+
+&parents=``58``
+
+&productTemplateID=``7``
+
 ]]
 `
 
