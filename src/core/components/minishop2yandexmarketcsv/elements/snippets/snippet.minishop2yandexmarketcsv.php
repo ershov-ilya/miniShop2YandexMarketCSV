@@ -1,12 +1,7 @@
 <?php
-define('DEBUG',1);
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
-$is_debug =0;
-$modx->setLogLevel($is_debug ? modX::LOG_LEVEL_INFO : modX::LOG_LEVEL_ERROR);
+define('DEBUG',0);
+$modx->setLogLevel(DEBUG ? modX::LOG_LEVEL_INFO : modX::LOG_LEVEL_ERROR);
 $modx->setLogTarget('ECHO'); //XPDO_CLI_MODE ? 'ECHO' : 'HTML'
-
-
 
 /* @var modX $modx */
 $Y = $modx->getService('minishop2yandexmarketcsv','miniShop2YandexMarketCSV',$modx->getOption('minishop2yandexmarketcsv_core_path',null,$modx->getOption('core_path').'components/minishop2yandexmarketcsv/').'model/minishop2yandexmarketcsv/',$scriptProperties);
@@ -19,17 +14,6 @@ $Y->put($fields);
 $arrFields=explode(';', $fields);
 $countFields=count($arrFields);
 $parents = $modx->getOption('parents',$scriptProperties,'0');
-if(DEBUG){
-    $Y->put("fields count: $countFields");
-    $Y->put("parents: $parents");
-    $Y->put("prefix: ".$modx->config['table_prefix']);
-}
-
-/*
-$product=$modx->getObject('msProduct',79);
-return $product->get('id'); 
-/**/
-
 
 // Start process
 $Y->start();

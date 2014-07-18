@@ -1,5 +1,6 @@
-Changelog for miniShop2YandexMarketCSV.
+Changelog:
 
-miniShop2YandexMarketCSV 0.0.1
-==============
-- Initial release.
+===================================
+miniShop2YandexMarketCSV 0.0.1-beta
+-----------------------------------
+- Initial beta.

@@ -23,6 +23,10 @@ $tmp = array(
         'type' => 'textfield',
         'value' => 'RUR',
     ),
+    'delivery' => array(
+        'type' => 'combo-boolean',
+        'value' => true,
+    ),
     'depth' => array(
         'type' => 'numberfield',
         'value' => '10',
@@ -51,18 +55,22 @@ $tmp = array(
 		),
 		'value' => 'ASC'
 	),
-	'limit' => array(
-		'type' => 'numberfield',
-		'value' => 1000,
-	),
+    'limit' => array(
+        'type' => 'numberfield',
+        'value' => 1000,
+    ),
+    'local_delivery_cost' => array(
+        'type' => 'numberfield',
+        'value' => 300,
+    ),
 	'outputSeparator' => array(
 		'type' => 'textfield',
 		'value' => "\n",
 	),
-	'toPlaceholder' => array(
-		'type' => 'combo-boolean',
-		'value' => false,
-	),
+    'toPlaceholder' => array(
+        'type' => 'combo-boolean',
+        'value' => false,
+    )
 );
 
 foreach ($tmp as $k => $v) {

@@ -23,27 +23,46 @@ class miniShop2YandexMarketCSV {
         $connectorUrl = $assetsUrl . 'connector.php';
 
         $this->config = array_merge(array(
-            'assetsUrl' => $assetsUrl,
-            'cssUrl' => $assetsUrl . 'css/',
-            'jsUrl' => $assetsUrl . 'js/',
-            'imagesUrl' => $assetsUrl . 'images/',
-            'connectorUrl' => $connectorUrl,
-            'context'	=>	'web',
-            'fields'	=>	'id,pagetitle',
+            'assetsUrl' 	=> $assetsUrl,
+            'cssUrl' 		=> $assetsUrl . 'css/',
+            'jsUrl'			=> $assetsUrl . 'js/',
+            'imagesUrl' 	=> $assetsUrl . 'images/',
+            'connectorUrl' 	=> $connectorUrl,
+            'context'		=>	'web',
+            'fields'		=>	'id,pagetitle',
+            'currencyId'	=>	'RUR',
+            'delivery'		=>	'true',
+            'local_delivery_cost'	=>	300,
 
-            'corePath' => $corePath,
-            'modelPath' => $corePath . 'model/',
-            'chunksPath' => $corePath . 'elements/chunks/',
+            'corePath' 		=> $corePath,
+            'modelPath'	 	=> $corePath . 'model/',
+            'chunksPath' 	=> $corePath . 'elements/chunks/',
             'templatesPath' => $corePath . 'elements/templates/',
-            'chunkSuffix' => '.chunk.tpl',
-            'snippetsPath' => $corePath . 'elements/snippets/',
+            'chunkSuffix' 	=> '.chunk.tpl',
+            'snippetsPath' 	=> $corePath . 'elements/snippets/',
             'processorsPath' => $corePath . 'processors/'
         ), $config);
 
         $this->modx->addPackage('minishop2yandexmarketcsv', $this->config['modelPath']);
         $this->modx->lexicon->load('minishop2yandexmarketcsv:default');
 
+        // Подготовка списка полей
         $this->config['arrFields']=explode(';',$this->config['fields']);
+
+        // Подготовка массива производителей
+        $q = $modx->newQuery('msVendor');
+        $q->innerJoin('msProductData', 'msProductData', '`msProductData`.`vendor` = `msVendor`.`id`');
+        $q->innerJoin('msProduct', 'msProduct', array(
+            '`msProductData`.`id` = `msProduct`.`id`',
+            'msProduct.deleted' => 0,
+            'msProduct.published' => 1
+        ));
+        $q->groupby('msVendor.id');
+        $q->sortby('name','ASC');
+        $q->select(array('msVendor.id', 'name'));
+
+        if ($q->prepare() && $q->stmt->execute()) $arrVendors = $q->stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        $this->config['vendor'] = $arrVendors;
     }
 
     function getConfig(){
@@ -72,6 +91,8 @@ class miniShop2YandexMarketCSV {
         {
             // Фильтр по шаблону
             if($product->get('template')!=$this->config['productTemplateID']) return 0;
+            // Фильтр по yml статусу (надо ли?)
+            //$yml_status = $product->get('yml_status');
 
             // ФОРМИРОВАНИЕ СТРОКИ
             $res= '';
@@ -89,36 +110,43 @@ class miniShop2YandexMarketCSV {
                         $res.= $category;
                         break;
                     case 'currencyId':
-                        $res.= 'RUR';
+                        $res.= $this->config['currencyId'];
                         break;
                     case 'available':
+                        $res.=($product->get('quantity')?'true':'false');
                         break;
                     case 'type':
                         $res.='vendor.model';
                         break;
                     case 'model':
-                        $res.= $product->get('pagetitle');
+                        $res.= $this->sanitize($product->get('pagetitle'));
                         break;
                     case 'url':
                         $res.=$this->modx->makeUrl($id, $this->config['context'], '', 'full');
                         break;
                     case 'description':
+                        $res.=$this->sanitize($product->get('description'));
                         break;
                     case 'vendor':
+                        $vendorID=$product->get('vendor');
+                        $res.= $this->config['vendor'][$vendorID];
                         break;
                     case 'local_delivery_cost':
+                        $res.=$this->config['local_delivery_cost'];
                         break;
                     case 'delivery':
+                        $res.= $this->config['delivery'];
                         break;
                     case 'picture':
+                        $res.= $product->get('image');
                         break;
                     default:
 
                 }
                 $res.= ';';
-
             }
-
+            //Убираем лишнюю точку с запятой
+            $res=preg_replace('/;$/','',$res);
             //$res.=$resource->get('pagetitle').":$id:".$resource->get('template');
 
             // Запись
@@ -135,7 +163,7 @@ class miniShop2YandexMarketCSV {
                 $this->iterateResource($id,$filter,$category);
             }
         }
-        return 0;
+        return 1;
     }
 
     function put($str, $br=true){
@@ -145,6 +173,12 @@ class miniShop2YandexMarketCSV {
 
     function getOutput(){
         return $this->output;
+    }
+
+    function sanitize($str){
+        $res=preg_replace('/;/',',',$str);
+        $res=preg_replace('/[\r\n]/','',$res);
+        return $res;
     }
 
 } // end of class miniShop2YandexMarketCSV
