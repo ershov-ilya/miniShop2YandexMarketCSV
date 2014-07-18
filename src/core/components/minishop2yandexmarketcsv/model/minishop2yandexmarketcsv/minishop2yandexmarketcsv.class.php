@@ -50,57 +50,91 @@ class miniShop2YandexMarketCSV {
         return $this->config;
     }
 
-    function start($id=0, $depth=0){
-        if(empty($depth)) $depth=$this->config['depth'];
-        $depth=2;
+    function start($id=0){
         if(empty($id)) $parents=$this->config['parents'];
         $arrIDs=explode(',',$parents);
+        $filter=array(
+            'context' =>  $this->config['context'],
+            'template' => $this->config['productTemplateID']
+        );
+
 
         foreach($arrIDs as $id)
         {
-            // Проверка самого элемента
-            $this->iterate($id);
-            // Начинаем перебор
-            $filter=array(
-                'context' =>  $this->config['context'],
-                'template' => $this->config['productTemplateID']
-            );
-            $array_ids = $this->modx->getChildIds($id,$depth,$filter);
-            foreach($array_ids as $id)
-            {
-                $this->iterate($id);
-            }
+            // Запуск рекурсии
+            $this->iterateResource($id, $filter);
         }
     }
 
-    function iterate($id){
-        $resource = $this->modx->getObject('modResource', $id);
-        // Фильтр по шаблону
-        if($resource->get('template')!=$this->config['productTemplateID']) return 0;
-
-        // ФОРМИРОВАНИЕ СТРОКИ
-        $res= '';
-        foreach($this->config['arrFields'] as $field)
+    function iterateResource($id, $filter=array(), $category=''){
+        $product = $this->modx->getObject($this->config['class'], $id);
+        if(is_object($product))
         {
-            switch($field)
+            // Фильтр по шаблону
+            if($product->get('template')!=$this->config['productTemplateID']) return 0;
+
+            // ФОРМИРОВАНИЕ СТРОКИ
+            $res= '';
+            foreach($this->config['arrFields'] as $field)
             {
-                case 'id':
-                    $res.= $id;
-                    break;
-                case 'type':
-                    $res.= $resource->get('pagetitle');
-                    break;
-                default:
+                switch($field)
+                {
+                    case 'id':
+                        $res.= $id;
+                        break;
+                    case 'price':
+                        $res.= $product->get('price');
+                        break;
+                    case 'category':
+                        $res.= $category;
+                        break;
+                    case 'currencyId':
+                        $res.= 'RUR';
+                        break;
+                    case 'available':
+                        break;
+                    case 'type':
+                        $res.='vendor.model';
+                        break;
+                    case 'model':
+                        $res.= $product->get('pagetitle');
+                        break;
+                    case 'url':
+                        $res.=$this->modx->makeUrl($id, $this->config['context'], '', 'full');
+                        break;
+                    case 'description':
+                        break;
+                    case 'vendor':
+                        break;
+                    case 'local_delivery_cost':
+                        break;
+                    case 'delivery':
+                        break;
+                    case 'picture':
+                        break;
+                    default:
+
+                }
+                $res.= ';';
 
             }
-            $res.= ';';
 
+            //$res.=$resource->get('pagetitle').":$id:".$resource->get('template');
+
+            // Запись
+            $this->put($res);
         }
-
-        //$res.=$resource->get('pagetitle').":$id:".$resource->get('template');
-
-        // Возврат
-        $this->put($res);
+        else
+        {
+            $resource = $this->modx->getObject('modResource', $id);
+            $category=$resource->get('pagetitle');
+            //$this->iterateResource($id,$category);
+            $array_ids = $this->modx->getChildIds($id,1,$filter);
+            foreach($array_ids as $id)
+            {
+                $this->iterateResource($id,$filter,$category);
+            }
+        }
         return 0;
     }
 

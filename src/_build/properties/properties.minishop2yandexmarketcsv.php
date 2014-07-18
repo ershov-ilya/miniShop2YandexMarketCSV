@@ -19,6 +19,10 @@ $tmp = array(
         'type' => 'textfield',
         'value' => 'msProduct',
     ),
+    'currencyId' => array(
+        'type' => 'textfield',
+        'value' => 'RUR',
+    ),
     'depth' => array(
         'type' => 'numberfield',
         'value' => '10',
