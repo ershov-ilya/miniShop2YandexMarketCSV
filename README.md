@@ -1,7 +1,8 @@
 miniShop2 to YandexMarket .CSV Export
 ===================
-MODX Revo, miniShop2
---------------------
+
+### MODX Revo, miniShop2
+
 
 usage in Resource body (content type "text") call the snippet
 
