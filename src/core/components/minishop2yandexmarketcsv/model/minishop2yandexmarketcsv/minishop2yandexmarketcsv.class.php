@@ -89,6 +89,10 @@ class miniShop2YandexMarketCSV {
         $product = $this->modx->getObject($this->config['class'], $id);
         if(is_object($product))
         {
+            // Фильтр по YML статусу
+			$yml_status = $product->get($this->config['ymlStatusFieldName']);
+			if($yml_status!==1) return 0;
+			
             // Фильтр по шаблону
             if($product->get('template')!=$this->config['productTemplateID']) return 0;
             // Фильтр по yml статусу (надо ли?)
@@ -138,7 +142,9 @@ class miniShop2YandexMarketCSV {
                         $res.= $this->config['delivery'];
                         break;
                     case 'picture':
-                        $res.= $product->get('image');
+                        $picture = $product->get('image');
+						$picture=preg_replace('/^\/\//','http://',$picture);
+						$res.= $picture;
                         break;
                     default:
 
